@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">data</string>
+    <string name="exception_generic">Lo sentimos, tenemos problemas al obtener datos de la solicitud. Inténtalo más tarde.</string>
+</resources>

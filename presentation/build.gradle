@@ -1,0 +1,87 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+
+def BASE_URL = '"' + YOY_BASE_URL + '"' ?: '"error empty YOY_BASE_URLL"'
+def PREFIX_IMAGE = '"' + YOY_PREFIX_IMAGE + '"' ?: '"error empty PREFIX_IMAGE"'
+def API_KEY = '"' + YOY_API_KEY + '"' ?: '"error empty API_KEY"'
+
+
+def STRING = 'String'
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.example.jockeyapp"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        each { type ->
+            buildConfigField STRING, 'YOY_PREFIX_IMAGE', PREFIX_IMAGE
+            buildConfigField STRING, 'YOY_BASE_URL', BASE_URL
+            buildConfigField STRING, 'YOY_API_KEY', API_KEY
+
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
+    implementation project(path: ':entity')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    //SDK support
+    implementation deps.support.appCompat
+    implementation deps.support.recyclerview
+    implementation deps.support.constraint
+    implementation deps.support.cardview
+    implementation deps.support.core
+    implementation deps.support.design
+    implementation deps.support.v4
+
+    //Jetpack
+    implementation deps.jetpack.navigationFragment
+    implementation deps.jetpack.navigationUi
+    implementation deps.jetpack.lifecycle
+    annotationProcessor deps.jetpack.lifecycleCompiler
+
+    //Rx
+    implementation deps.reactive.rxjava
+    implementation deps.reactive.rxAndroid
+    implementation deps.reactive.rxKotlin
+
+    //Injections
+    implementation deps.injections.koin
+
+    //Rest
+    implementation deps.rest.retrofit
+    implementation deps.rest.converterGson
+    implementation deps.rest.okhttp
+
+    implementation "io.coil-kt:coil:0.9.1"
+
+}
